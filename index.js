@@ -10,7 +10,7 @@ const database = require('./server/database');
 //Connect to database
 database.connect(config.database, {});
 
-const port = 3000;
+const port = 5050;
 const server = http.createServer(app);
 
 server.listen(port, () => {

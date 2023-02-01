@@ -20,7 +20,7 @@ router.param('id', controller.id);
 
 router
   .route('/:id')
-  .get(controller.read)
+  .get(auth.token, controller.read)
   .put(auth.token, controller.update)
   .delete(controller.delete);
 
@@ -35,7 +35,6 @@ router
 router
   .route('/devolverImagen/:secretaria/:pathImagen')
   .get(controller.returnfile);
-
 
 
 router

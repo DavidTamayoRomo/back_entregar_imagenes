@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 const requestId = require('express-request-id')();
 const bodyParser = require('body-parser');
 const logger = require('./config/logger');
@@ -8,13 +9,14 @@ const api = require('./api/v1');
 // Init App
 const app = express();
 
-//cors
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  next();
-});
+//setup CORS
+app.use(
+  cors({
+    origin: '*',
+    methods: ['GET', 'PUT', 'POST', 'DELETE'],
+    allowedHeaders: ['*'],
+  })
+);
 
 //TODO: Definir limite de tamaño de archivos
 app.use(express.json({ limit: '50000mb' }));
