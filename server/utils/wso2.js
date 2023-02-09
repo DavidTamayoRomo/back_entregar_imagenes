@@ -18,7 +18,7 @@ const wso2Service = {
           },
         })
         .then((response) => {
-          //console.log('response', response);
+          console.log('Token', response);
           return response.data;
         });
     } catch (error) {

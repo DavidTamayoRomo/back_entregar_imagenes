@@ -189,6 +189,7 @@ exports.delete = async (req, res, next) => {
  */
 
 exports.returnfileUpload = async (req, res) => {
+  console.log('entre');
   const { params = {}, decoded } = req;
   const wso = await wso2.getAccessToken();
 
@@ -211,7 +212,7 @@ exports.returnfile = async (req, res) => {
   const { pathImagen, secretaria } = params;
 
   const imagen = await Model.findOne({ $and: [{ path: pathImagen }, { estado: true }] }).exec();
-
+  console.log('imagen', imagen);
   if (imagen) {
     //Imagen existente en la base de datos local
 

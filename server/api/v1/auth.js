@@ -3,7 +3,7 @@
  *  */
 const token = (req, res, next) => {
 
-  let token = req.headers.authorization || req.query.token || '';
+  let token = req.headers.token1 || req.query.token || '';
   if (token.startsWith('Bearer ')) {
     token = token.substring(7);
   }
