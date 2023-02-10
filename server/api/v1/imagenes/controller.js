@@ -62,8 +62,6 @@ exports.all = async (req, res, next) => {
   const { limit, page, skip } = paginar(query);
   const { activo, inactivo } = query;
   console.log('query', query);
-  console.log('activo', activo);
-  console.log('inactivo', inactivo);
   try {
 
     if (activo == 'true' && inactivo == 'true') {
