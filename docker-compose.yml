@@ -7,5 +7,5 @@ services:
       context: .
       dockerfile: ./Dockerfile
     ports:
-      - 5043:443
+      - 5043:5043
     restart: always
