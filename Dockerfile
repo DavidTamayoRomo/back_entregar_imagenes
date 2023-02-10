@@ -15,6 +15,8 @@ RUN npm install
 # Bundle app source
 COPY . .
 
+EXPOSE 80
+EXPOSE 443
 CMD [ "node", "index.js" ]
 
 # nginx state for serving content
