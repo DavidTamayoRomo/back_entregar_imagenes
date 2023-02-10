@@ -20,7 +20,7 @@ exports.connect = (
           dburl= `${protocol}://${url}`;
         }
         
-        mongoose.connect('mongodb://root:Rm3MpB4vR5AXPL@localhost:6400/?authMechanism=DEFAULT', {
+        mongoose.connect('mongodb://root:Rm3MpB4vR5AXPL@172.22.4.106:6400/?authMechanism=DEFAULT', {
           ...options,
           useNewUrlParser:true,
           useCreateIndex:true,
