@@ -15,18 +15,6 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-EXPOSE 80
-EXPOSE 443
+EXPOSE 5043
+EXPOSE 5050
 CMD [ "node", "index.js" ]
-
-# nginx state for serving content
-FROM nginx:alpine
-# Set working directory to nginx asset directory
-WORKDIR /usr/share/nginx/html
-# Remove default nginx static assets
-RUN rm -rf ./*
-#Copiar archivo de configuracion
-COPY default.conf /etc/nginx/conf.d/default.conf
-# Containers run nginx with global directives and daemon off
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
-
