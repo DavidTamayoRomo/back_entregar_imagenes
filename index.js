@@ -15,8 +15,8 @@ const options = {
 //Connect to database
 database.connect(config.database, {});
 
-/* const port = 5050;
-const server = http.createServer(app); */
+const port = 5050;
+const server = http.createServer(app);
 
 const serverHttps = https.createServer(options, app);
 
@@ -24,7 +24,7 @@ serverHttps.listen(5043, () => {
   console.log(`Server corriendo en el puerto 5043`);
 });
 
-/* server.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server corriendo en el puerto ${port}`);
-}); */
+});
 

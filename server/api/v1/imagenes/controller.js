@@ -35,11 +35,11 @@ exports.id = async (req, res, next, id) => {
 exports.create = async (req, res, next) => {
   const { body = {}, decoded = {} } = req;
   const document = new Model(body);
-  console.log('Entre');
+  //console.log('Entre');
   try {
 
-    console.log('nombre:', body.nombreImagen);
-    console.log('imagen:', body.fileBase64);
+    //console.log('nombre:', body.nombreImagen);
+    //console.log('imagen:', body.fileBase64);
     const consumo = await consumoFileServer.consumoWSO2FileServer(body.nombreImagen, decoded, body.fileBase64);
 
     Object.assign(document, { imagen: consumo });
@@ -60,18 +60,49 @@ exports.all = async (req, res, next) => {
 
   const { query = {} } = req;
   const { limit, page, skip } = paginar(query);
-
-
+  const { activo, inactivo } = query;
+  console.log('query', query);
+  console.log('activo', activo);
+  console.log('inactivo', inactivo);
   try {
-    const docs = await Model.find({})
-      .sort({ path: 1 })
-      .limit(10)
-      .skip(skip)
-      .exec();
-    res.json({
-      success: true,
-      data: docs,
-    });
+
+    if (activo == 'true' && inactivo == 'true') {
+      console.log('Entre uno');
+      let docs = await Model.find({})
+        .sort({ path: 1 })
+        .limit(10)
+        .skip(skip)
+        .exec();
+      res.json({
+        success: true,
+        data: docs,
+      });
+    } else if (activo == 'true') {
+      console.log('Entre dos');
+      let docs = await Model.find({ estado: true })
+        .sort({ path: 1 })
+        .limit(10)
+        .skip(skip)
+        .exec();
+      res.json({
+        success: true,
+        data: docs,
+      });
+    } else if (inactivo == 'true') {
+      console.log('Entre tres');
+      let docs = await Model.find({ estado: false })
+        .sort({ path: 1 })
+        .limit(10)
+        .skip(skip)
+        .exec();
+      res.json({
+        success: true,
+        data: docs,
+      });
+    }
+
+
+
   } catch (err) {
     next(new Error(err));
   }
@@ -103,7 +134,7 @@ exports.obtenerImagenByPath = async (req, res, next) => {
 exports.wsoFileServerGetImgen = async (req, res, next) => {
 
   const { params = {}, decoded } = req;
-  console.log('params', params);
+  //console.log('params', params);
   const getImagen = await consumoFileServer.consumoWSO2FileServerGetImagen(decoded, params.imagen);
 
   try {
@@ -156,7 +187,7 @@ exports.update = async (req, res, next) => {
           return imagenActualizada;
         }
       });
-      console.log('imagenesDesactivar', imagenesDesactivar);
+      //console.log('imagenesDesactivar', imagenesDesactivar);
     }
 
     const update = await doc.save();
@@ -189,7 +220,7 @@ exports.delete = async (req, res, next) => {
  */
 
 exports.returnfileUpload = async (req, res) => {
-  console.log('entre');
+  //console.log('entre');
   const { params = {}, decoded } = req;
   const wso = await wso2.getAccessToken();
 
@@ -212,7 +243,7 @@ exports.returnfile = async (req, res) => {
   const { pathImagen, secretaria } = params;
 
   const imagen = await Model.findOne({ $and: [{ path: pathImagen }, { estado: true }] }).exec();
-  console.log('imagen', imagen);
+  //console.log('imagen', imagen);
   if (imagen) {
     //Imagen existente en la base de datos local
 

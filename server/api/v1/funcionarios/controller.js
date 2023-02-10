@@ -36,7 +36,7 @@ exports.create = async (req, res, next) => {
   const document = new Model(body);
   try {
     const consumo = await consumoFileServer.consumoWSO2FileServer(body.nombreImagen, decoded, body.fileBase64);
-    console.log('consumo:', consumo);
+    //console.log('consumo:', consumo);
     Object.assign(document, { imagen: consumo });
     const doc = await document.save();
     res.status(201);
@@ -118,7 +118,7 @@ exports.nombreAutoridad = async (req, res, next) => {
 exports.findByCargo = async (req, res, next) => {
   const { doc = {} } = req;
   const { params = {} } = req;
-  console.log('params:', params);
+  //console.log('params:', params);
   try {
     const docs = await Model.findOne({
       $and: [
@@ -169,9 +169,9 @@ exports.delete = async (req, res, next) => {
 exports.returnfileFuncionario = async (req, res) => {
   const { params = {} } = req;
   const { cargo } = params;
-  console.log('cargo:', cargo);
+  //console.log('cargo:', cargo);
   const imagen = await Model.findOne({ $and: [{ cargo: cargo }, { estado: true }] }).exec();
-  console.log('imagen:', imagen);
+  //console.log('imagen:', imagen);
   if (imagen) {
     //Imagen existente en la base de datos local
 
