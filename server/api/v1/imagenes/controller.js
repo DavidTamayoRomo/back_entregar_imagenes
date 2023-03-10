@@ -265,10 +265,8 @@ exports.returnfile = async (req, res) => {
     }
 
   } else {
-    res.json({
-      success: false,
-      data: 'No se encontro la imagen'
-    });
+    let pathArchivo2 = path.join(__dirname, `../../../uploads/imagenes/default.png`);
+    res.sendFile(pathArchivo2);
   }
 
 }
