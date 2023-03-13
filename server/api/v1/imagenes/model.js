@@ -20,6 +20,10 @@ const fields = {
     type: String,
     require: true
   },
+  imagenReducida: {
+    type: String,
+    require: true
+  },
   path: {
     type: String
   },

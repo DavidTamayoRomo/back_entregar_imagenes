@@ -41,8 +41,8 @@ exports.create = async (req, res, next) => {
     //console.log('nombre:', body.nombreImagen);
     //console.log('imagen:', body.fileBase64);
     const consumo = await consumoFileServer.consumoWSO2FileServer(body.nombreImagen, decoded, body.fileBase64);
-
-    Object.assign(document, { imagen: consumo });
+    const consumo1 = await consumoFileServer.consumoWSO2FileServer(body.nombreImagen2, decoded, body.fileBase64_1);
+    Object.assign(document, { imagen: consumo, imagenReducida: consumo1 });
 
     const doc = await document.save();
     res.status(201);
@@ -157,14 +157,18 @@ exports.read = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
   const { doc = {}, body = {}, decoded } = req;
-
+  Object.assign(doc, body);
+  if (body.fileBase64_1) {
+    const consumo2 = await consumoFileServer.consumoWSO2FileServer(body.nombreImagen2, decoded, body.fileBase64_1);
+    Object.assign(doc, { imagenReducida: consumo2 });
+  }
   if (body.fileBase64) {
     const consumo = await consumoFileServer.consumoWSO2FileServer(body.nombreImagen, decoded, body.fileBase64);
-    Object.assign(doc, body, { imagen: consumo });
-  } else {
+    Object.assign(doc, { imagen: consumo });
+  } /* else {
     const consumo = doc.imagen;
     Object.assign(doc, body, { imagen: consumo });
-  }
+  } */
 
   try {
 
@@ -241,7 +245,7 @@ exports.returnfile = async (req, res) => {
   const { pathImagen, secretaria } = params;
 
   const imagen = await Model.findOne({ $and: [{ path: pathImagen }, { estado: true }] }).exec();
-  //console.log('imagen', imagen);
+  console.log('imagen', imagen);
   if (imagen) {
     //Imagen existente en la base de datos local
 
@@ -265,8 +269,31 @@ exports.returnfile = async (req, res) => {
     }
 
   } else {
-    let pathArchivo2 = path.join(__dirname, `../../../uploads/imagenes/default.png`);
-    res.sendFile(pathArchivo2);
+    const imagen1 = await Model.findOne({ $and: [{ path: 'default' }, { estado: true }] }).exec();
+    if (imagen1) {
+      let pathArchivo2 = path.join(__dirname, `../../../uploads/imagenes/${imagen1.imagen}.png`);
+      if (fs.existsSync(pathArchivo2)) {
+        //Existe imagen almacenada
+        res.sendFile(pathArchivo2);
+      } else {
+        //No existe imagen almacenada
+        const wso = await wso2.getAccessToken();
+        const getImagen = await consumoFileServer.consumoWSO2FileServerGetImagen(wso.access_token, imagen.imagen);
+        const pathArchivo = path.join(__dirname, `../../../uploads/imagenes/${imagen.imagen}.png`);
+        const base64 = getImagen.Contenido;
+        const imageBuffer = Buffer.from(base64, "base64");
+        try {
+          writeFileSync(pathArchivo, imageBuffer);
+          res.sendFile(pathArchivo);
+        } catch (error) {
+          next(new Error(error));
+        }
+      }
+    } else {
+      let pathArchivo3 = path.join(__dirname, `../../../uploads/imagenes/default.jpg`);
+      res.sendFile(pathArchivo3);
+    }
+
   }
 
 }
