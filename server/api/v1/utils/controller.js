@@ -1,5 +1,6 @@
 const Imagen = require('../imagenes/model');
 const Funcionario = require('../funcionarios/model');
+const Slogan = require('../slogan/model');
 
 exports.busquedaEspecifica = async (req, res = response) => {
 
@@ -27,6 +28,16 @@ exports.busquedaEspecifica = async (req, res = response) => {
       try {
         data = await Funcionario.find({
           $or: [{ cargo: regex }, { nombres: regex }, { apellidos: regex }]
+        });
+        break;
+      } catch (error) {
+        next(new Error(error));
+        break;
+      }
+    case 'slogan':
+      try {
+        data = await Slogan.find({
+          $or: [{ titulo: regex }, { descripcion: regex }, { path: regex }]
         });
         break;
       } catch (error) {

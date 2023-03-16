@@ -23,7 +23,7 @@ router.param('id', controller.id);
 router
   .route('/:id')
   .get(controller.read)
-  .put(controller.update)
+  .put(auth.token, controller.update)
   .delete(controller.delete);
 
 router

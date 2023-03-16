@@ -137,10 +137,33 @@ exports.findByPath = async (req, res, next) => {
 };
 
 exports.update = async (req, res, next) => {
-  const { doc = {}, body = {} } = req;
+  const { doc = {}, body = {}, decoded } = req;
   Object.assign(doc, body);
+  if (body.fileBase64) {
+    const consumo = await consumoFileServer.consumoWSO2FileServer(body.nombreImagen, decoded, body.fileBase64);
+    Object.assign(doc, { imagen: consumo });
+  }
 
   try {
+
+    const slogans = await Model.find({}).exec();
+    const slogansFiltrados = await slogans.filter((slogan) => {
+      if (slogan.path === body.path) {
+        return slogan;
+      }
+    });
+
+    if (body.estado === true) {
+      //debo desactivar el resto de las slogans
+      let slogansDesactivar = await slogansFiltrados.filter((slogan) => {
+        if (slogan.estado === true) {
+          slogan.estado = false;
+          let sloganActualizada = slogan.save();
+          return sloganActualizada;
+        }
+      });
+    }
+
     const update = await doc.save();
     res.json({
       success: true,

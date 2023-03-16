@@ -137,15 +137,40 @@ exports.findByCargo = async (req, res, next) => {
 };
 
 exports.update = async (req, res, next) => {
-  const { doc = {}, body = {} } = req;
+  const { doc = {}, body = {}, decoded } = req;
   Object.assign(doc, body);
+  if (body.fileBase64) {
+    const consumo = await consumoFileServer.consumoWSO2FileServer(body.nombreImagen, decoded, body.fileBase64);
+    Object.assign(doc, { imagen: consumo });
+  }
 
   try {
+
+    const imagenes = await Model.find({}).exec();
+    const funcionariosFiltrados = await imagenes.filter((imagen) => {
+      if (imagen.path === body.path) {
+        return imagen;
+      }
+    });
+
+    if (body.estado === true) {
+      //debo desactivar el resto de las imagenes
+      let imagenesDesactivar = await funcionariosFiltrados.filter((funcionario) => {
+        if (funcionario.estado === true) {
+          funcionario.estado = false;
+          let funcionarioActualizada = funcionario.save();
+          return funcionarioActualizada;
+        }
+      });
+    }
+
     const update = await doc.save();
     res.json({
       success: true,
       data: update
     });
+
+
   } catch (error) {
     next(new Error(error));
   }
