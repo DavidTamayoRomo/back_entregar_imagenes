@@ -278,8 +278,8 @@ exports.returnfile = async (req, res) => {
       } else {
         //No existe imagen almacenada
         const wso = await wso2.getAccessToken();
-        const getImagen = await consumoFileServer.consumoWSO2FileServerGetImagen(wso.access_token, imagen.imagen);
-        const pathArchivo = path.join(__dirname, `../../../uploads/imagenes/${imagen.imagen}.png`);
+        const getImagen = await consumoFileServer.consumoWSO2FileServerGetImagen(wso.access_token, imagen1.imagen);
+        const pathArchivo = path.join(__dirname, `../../../uploads/imagenes/${imagen1.imagen}.png`);
         const base64 = getImagen.Contenido;
         const imageBuffer = Buffer.from(base64, "base64");
         try {
