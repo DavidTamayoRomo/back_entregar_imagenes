@@ -1,8 +1,8 @@
 const fetch = require('node-fetch');
-
+require('dotenv').config();
 exports.consumoWSO2FileServer = async (nombreImagen, token, fileBase64) => {
   //TODO: Cambiar la url del fileserver
-  const response = await fetch('http://sso-poc.quito.gob.ec:8280/fileserver/1.0/Archivo/Guardar/8', {
+  const response = await fetch(`${process.env.FILE_SERVER}/fileserver/1.0/Archivo/Guardar/${process.env.SISTEMAIDFILESERVER}`, {
     method: 'post',
     headers: {
       'accept': 'application/json',
@@ -14,7 +14,7 @@ exports.consumoWSO2FileServer = async (nombreImagen, token, fileBase64) => {
       "Contenido": fileBase64,
       "Observacion": "Imagen",
       "DatosAuditoria": {
-        "Usuario": "ftamayor",
+        "Usuario": "user",
         "DireccionIP": "172.16.20.29"
       }
     }),
@@ -27,7 +27,7 @@ exports.consumoWSO2FileServer = async (nombreImagen, token, fileBase64) => {
 
 exports.consumoWSO2FileServerGetImagen = async (token, imagen) => {
   //TODO: Cambiar la url del fileserver
-  const response = await fetch(`http://sso-poc.quito.gob.ec:8280/fileserver/1.0/Archivo/Recuperar/${imagen}`, {
+  const response = await fetch(`${process.env.FILE_SERVER}/fileserver/1.0/Archivo/Recuperar/${imagen}`, {
     method: 'get',
     headers: {
       'accept': 'application/json',

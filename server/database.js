@@ -1,26 +1,21 @@
 const mongoose = require('mongoose');
 const logger = require('./config/logger');
+require('dotenv').config();
 
-//mongodb://root:Rm3MpB4vR5AXPL@172.22.4.106:6400/?authMechanism=DEFAULT&tls=false&tlsInsecure=true&directConnection=true
 exports.connect = (
-  {
-    protocol = 'mongodb',
-    url,
-    username = '',
-    password = ''
-  },
+  { protocol = 'mongodb', url, username = '', password = '' },
   options = {}
 ) => {
   let dburl = '';
 
-  //Required auth
+  // Required auth
   if (username && password) {
     dburl = `${protocol}://${username}:${password}@${url}`;
   } else {
     dburl = `${protocol}://${url}`;
   }
-  //mongodb://root:Rm3MpB4vR5AXPL@localhost:6400/?authMechanism=DEFAULT
-  mongoose.connect('mongodb://root:Rm3MpB4vR5AXPL@localhost:6400/?authMechanism=DEFAULT', {
+
+  mongoose.connect(dburl, {
     ...options,
     useNewUrlParser: true,
     useCreateIndex: true,
