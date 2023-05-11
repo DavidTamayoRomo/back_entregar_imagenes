@@ -66,6 +66,7 @@ exports.all = async (req, res, next) => {
 
     if (activo == 'true' && inactivo == 'true') {
       console.log('Entre uno');
+      let contador = await Model.countDocuments({}).exec();
       let docs = await Model.find({})
         .sort({ path: 1 })
         .limit(10)
@@ -74,9 +75,11 @@ exports.all = async (req, res, next) => {
       res.json({
         success: true,
         data: docs,
+        totalImagenes: contador
       });
     } else if (activo == 'true') {
       console.log('Entre dos');
+      let contador = await Model.countDocuments({}).exec();
       let docs = await Model.find({ estado: true })
         .sort({ path: 1 })
         .limit(10)
@@ -85,9 +88,11 @@ exports.all = async (req, res, next) => {
       res.json({
         success: true,
         data: docs,
+        totalImagenes: contador
       });
     } else if (inactivo == 'true') {
       console.log('Entre tres');
+      let contador = await Model.countDocuments({}).exec();
       let docs = await Model.find({ estado: false })
         .sort({ path: 1 })
         .limit(10)
@@ -96,6 +101,7 @@ exports.all = async (req, res, next) => {
       res.json({
         success: true,
         data: docs,
+        totalImagenes: contador
       });
     }
 
@@ -183,7 +189,7 @@ exports.update = async (req, res, next) => {
     if (body.estado === true) {
       //debo desactivar el resto de las imagenes
       let imagenesDesactivar = await imagenesFiltrados.filter((imagen) => {
-        if (imagen.estado === true) {
+        if (imagen.estado === true && imagen.id !== body._id) {
           imagen.estado = false;
           let imagenActualizada = imagen.save();
           return imagenActualizada;
@@ -201,6 +207,8 @@ exports.update = async (req, res, next) => {
     next(new Error(error));
   }
 };
+
+
 
 exports.delete = async (req, res, next) => {
   const { doc = {} } = req;

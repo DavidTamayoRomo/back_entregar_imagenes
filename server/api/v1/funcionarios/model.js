@@ -40,10 +40,16 @@ const fields = {
     type: Boolean,
     require: true
   },
+  usuario_creacion: {
+    type: String
+  },
+  usuario_actualizacion: {
+    type: String
+  },
 };
 
 //timestamps es created at - updated at
-const funcionario = new Schema(fields, { timestamps: true });
+const funcionario = new Schema(fields, { timestamps: { createdAt: 'fecha_creacion', updatedAt: 'fecha_modificacion' } });
 
 module.exports = mongoose.model('funcionario', funcionario);
 

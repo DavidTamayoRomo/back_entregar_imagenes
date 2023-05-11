@@ -60,6 +60,7 @@ exports.all = async (req, res, next) => {
   try {
     if (activo == 'true' && inactivo == 'true') {
       console.log('Entre uno');
+      let contador = await Model.countDocuments({}).exec();
       let docs = await Model.find({})
         .sort({ path: 1 })
         .limit(10)
@@ -68,9 +69,11 @@ exports.all = async (req, res, next) => {
       res.json({
         success: true,
         data: docs,
+        totalfuncionarios: contador
       });
     } else if (activo == 'true') {
       console.log('Entre dos');
+      let contador = await Model.countDocuments({}).exec();
       let docs = await Model.find({ estado: true })
         .sort({ path: 1 })
         .limit(10)
@@ -79,9 +82,11 @@ exports.all = async (req, res, next) => {
       res.json({
         success: true,
         data: docs,
+        totalfuncionarios: contador
       });
     } else if (inactivo == 'true') {
       console.log('Entre tres');
+      let contador = await Model.countDocuments({}).exec();
       let docs = await Model.find({ estado: false })
         .sort({ path: 1 })
         .limit(10)
@@ -90,6 +95,7 @@ exports.all = async (req, res, next) => {
       res.json({
         success: true,
         data: docs,
+        totalfuncionarios: contador
       });
     }
   } catch (err) {
