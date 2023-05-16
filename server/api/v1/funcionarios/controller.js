@@ -154,7 +154,7 @@ exports.update = async (req, res, next) => {
 
     const imagenes = await Model.find({}).exec();
     const funcionariosFiltrados = await imagenes.filter((imagen) => {
-      if (imagen.path === body.path) {
+      if (imagen.cargo === body.path) {
         return imagen;
       }
     });
