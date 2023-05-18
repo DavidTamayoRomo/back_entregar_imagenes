@@ -181,12 +181,14 @@ exports.update = async (req, res, next) => {
 };
 
 exports.delete = async (req, res, next) => {
-  const { doc = {} } = req;
+  const { doc = {}, decoded } = req;
   try {
+    const inactivar1 = await consumoFileServer.consumoWSO2FileServerEliminar(decoded, doc.imagen);
     const removed = await doc.remove();
     res.json({
       success: true,
-      data: removed
+      data: removed,
+      inactivar1
     });
   } catch (error) {
     next(new Error(error));

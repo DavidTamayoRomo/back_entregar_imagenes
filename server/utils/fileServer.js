@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 require('dotenv').config();
 exports.consumoWSO2FileServer = async (nombreImagen, token, fileBase64) => {
-  //TODO: Cambiar la url del fileserver
+
   const response = await fetch(`${process.env.FILE_SERVER}/fileserver/1.0/Archivo/Guardar/${process.env.SISTEMAIDFILESERVER}`, {
     method: 'post',
     headers: {
@@ -26,7 +26,7 @@ exports.consumoWSO2FileServer = async (nombreImagen, token, fileBase64) => {
 };
 
 exports.consumoWSO2FileServerGetImagen = async (token, imagen) => {
-  //TODO: Cambiar la url del fileserver
+
   const response = await fetch(`${process.env.FILE_SERVER}/fileserver/1.0/Archivo/Recuperar/${imagen}`, {
     method: 'get',
     headers: {
@@ -34,6 +34,28 @@ exports.consumoWSO2FileServerGetImagen = async (token, imagen) => {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     },
+
+  }).then((response) => {
+    return response.json();
+  });
+  return response;
+};
+
+
+exports.consumoWSO2FileServerEliminar = async (token, imagen) => {
+
+  const response = await fetch(`${process.env.FILE_SERVER}/fileserver/1.0/Archivo/Eliminar/${imagen}`, {
+    method: 'delete',
+    headers: {
+      'accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      "Usuario": "update",
+      "DireccionIP": "172.22.4.189"
+    }),
+
 
   }).then((response) => {
     return response.json();

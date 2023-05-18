@@ -24,7 +24,7 @@ router
   .route('/:id')
   .get(controller.read)
   .put(auth.token, controller.update)
-  .delete(controller.delete);
+  .delete(auth.token, controller.delete);
 
 router
   .route('/devolverImagen/:cargo')
