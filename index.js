@@ -2,15 +2,18 @@
 const http = require('http');
 const https = require('https');
 const fs = require('fs');
+
 require('dotenv').config();
 const app = require('./server');
 const config = require('./server/config');
 const database = require('./server/database');
 
+
 const options = {
   key: fs.readFileSync('./certs/key.key'),
   cert: fs.readFileSync('./certs/certificate.crt')
 }
+
 
 //Connect to database
 database.connect(config.database, {});

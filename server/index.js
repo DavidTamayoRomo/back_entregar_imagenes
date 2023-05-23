@@ -1,13 +1,23 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+const swaggerUI = require('swagger-ui-express');
+const logger = require('./config/logger');
 const requestId = require('express-request-id')();
 const bodyParser = require('body-parser');
-const logger = require('./config/logger');
 const api = require('./api/v1');
+const docs = require('./api/v1/docs');
 
 // Init App
 const app = express();
+
+//Documentacion
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
+app.get('/swagger.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(docs);
+});
+
 
 //setup CORS
 app.use(

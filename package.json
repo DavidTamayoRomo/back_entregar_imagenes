@@ -29,12 +29,15 @@
     "express-request-id": "^1.4.1",
     "fetch-blob": "^3.2.0",
     "formdata-polyfill": "^4.0.10",
+    "lodash": "^4.17.21",
     "mongoose": "^5.13.7",
     "morgan": "^1.10.0",
     "node-base64-to-file": "^1.0.4",
     "node-fetch": "^2.6.7",
     "nodemon": "^2.0.12",
     "strip-final-newline": "^3.0.0",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.1.6",
     "winston": "^3.3.3"
   },
   "devDependencies": {
